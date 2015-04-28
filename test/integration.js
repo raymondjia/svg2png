@@ -99,13 +99,13 @@ it("should pass through errors about unloadable source files", function (done) {
 });
 
 it("should handle svg file with 'width=100%' and 'height=100%'", function(done) {
-    svg2png(relative("images/button.svg"), relative("images/button-actual.png"), 1.0, function (err) {
+    svg2png(relative("images/6.svg"), relative("images/6-actual.png"), 1.0, function (err) {
         if (err) {
             return done(err);
         }
 
-        var expected = fs.readFileSync(relative("images/button-55x32.png"));
-        var actual = fs.readFileSync(relative("images/button-actual.png"));
+        var expected = fs.readFileSync(relative("images/6-expected-55x32.png"));
+        var actual = fs.readFileSync(relative("images/6-actual.png"));
 
         actual.should.deep.equal(expected);
 
@@ -114,13 +114,13 @@ it("should handle svg file with 'width=100%' and 'height=100%'", function(done) 
 });
 
 it("should handle svg file with no 'width' and 'height' attributes", function(done) {
-    svg2png(relative("images/factory.svg"), relative("images/factory-actual.png"), 2, function (err) {
+    svg2png(relative("images/7.svg"), relative("images/7-actual.png"), 2, function (err) {
         if (err) {
             return done(err);
         }
 
-        var expected = fs.readFileSync(relative("images/factory-expected.png"));
-        var actual = fs.readFileSync(relative("images/factory-actual.png"));
+        var expected = fs.readFileSync(relative("images/7-expected.png"));
+        var actual = fs.readFileSync(relative("images/7-actual.png"));
 
         actual.should.deep.equal(expected);
 
@@ -128,20 +128,47 @@ it("should handle svg file with no 'width' and 'height' attributes", function(do
     });
 });
 
-it("should convert svg file to a target dimension", function(done) {
-    svg2png(relative("images/button.svg"), relative("images/button-actual.png"), 100, 40, function (err) {
+it("should convert svg file to target width", function(done) {
+    svg2png(relative("images/6.svg"), relative("images/6-actual.png"), 100, 0, function (err) {
         if (err) {
             return done(err);
         }
 
-        var expected = fs.readFileSync(relative("images/button-100x40.png"));
-        var actual = fs.readFileSync(relative("images/button-actual.png"));
+        var expected = fs.readFileSync(relative("images/6-expected-100x0.png"));
+        var actual = fs.readFileSync(relative("images/6-actual.png"));
 
         actual.should.deep.equal(expected);
 
         done();
     });});
 
+it("should convert svg file to target height", function(done) {
+    svg2png(relative("images/6.svg"), relative("images/6-actual.png"), 0, 100, function (err) {
+        if (err) {
+            return done(err);
+        }
+
+        var expected = fs.readFileSync(relative("images/6-expected-0x100.png"));
+        var actual = fs.readFileSync(relative("images/6-actual.png"));
+
+        actual.should.deep.equal(expected);
+
+        done();
+    });});
+
+it("should convert svg file to target width and height", function(done) {
+    svg2png(relative("images/6.svg"), relative("images/6-actual.png"), 100, 100, function (err) {
+        if (err) {
+            return done(err);
+        }
+
+        var expected = fs.readFileSync(relative("images/6-expected-100x100.png"));
+        var actual = fs.readFileSync(relative("images/6-actual.png"));
+
+        actual.should.deep.equal(expected);
+
+        done();
+    });});
 
 after(function () {
     fs.unlink(relative("images/1-actual.png"));
@@ -149,8 +176,8 @@ after(function () {
     fs.unlink(relative("images/3-actual.png"));
     fs.unlink(relative("images/4-actual.png"));
     fs.unlink(relative("images/5-actual.png"));
-    fs.unlink(relative("images/button-actual.png"));
-    fs.unlink(relative("images/factory-actual.png"));
+    fs.unlink(relative("images/6-actual.png"));
+    fs.unlink(relative("images/7-actual.png"));
 });
 
 function relative(relPath) {
